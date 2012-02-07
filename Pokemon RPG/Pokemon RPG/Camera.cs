@@ -13,8 +13,6 @@ namespace Pokemon_RPG
 	{
 		public Vector2 Position { get; set; }
 
-		private Vector2 targetPosition;
-
 		public float Zoom { get; set; }
 
 		public float Rotation { get; set; }
@@ -22,7 +20,7 @@ namespace Pokemon_RPG
 		public Camera()
 		{
 			Position = Vector2.Zero;
-			Zoom = 1.5f;
+			Zoom = 1.35f;
 			Rotation = 0f;
 		}
 
@@ -36,10 +34,10 @@ namespace Pokemon_RPG
 		public Rectangle GetRectangle()
 		{
 			return new Rectangle(
-				(int)((Position.X - Helper.GetWindowSize().X / 2f) / Zoom),
-				(int)((Position.Y - Helper.GetWindowSize().Y / 2f) / Zoom),
-				(int)((Position.X + Helper.GetWindowSize().X / 2f) / Zoom),
-				(int)((Position.Y + Helper.GetWindowSize().Y / 2f) / Zoom));
+				(int)Math.Floor((Position.X - Helper.GetWindowSize().X / 2f) / Zoom),
+				(int)Math.Floor((Position.Y - Helper.GetWindowSize().Y / 2f) / Zoom),
+				(int)Math.Floor((Position.X + Helper.GetWindowSize().X / 2f) / Zoom),
+				(int)Math.Floor((Position.Y + Helper.GetWindowSize().Y / 2f) / Zoom));
 		}
 
 		public void Move(Vector2 add)

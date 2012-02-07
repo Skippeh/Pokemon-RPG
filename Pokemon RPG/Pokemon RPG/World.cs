@@ -70,10 +70,7 @@ namespace Pokemon_RPG
 		{
 			if(InputManager.KeyJustPressed(Keys.Enter) && worldGen.GetTilesPercentage() >= 1f) this.GenerateWorld(true);
 
-			foreach (Tile t in tileSystem.GetTilesAt(Camera.GetRectangle(), false))
-			{
-				t.Update(gt);
-			}
+			tileSystem.Update(tileSystem.GetArea(Camera.GetPosition()), gt);
 		}
 		
 		public void Draw(GameTime gt)
@@ -84,9 +81,10 @@ namespace Pokemon_RPG
 			graphicsDevice.SetRenderTarget(RenderTarget);
 
 			this.spriteBatch.Begin(
-				SpriteSortMode.BackToFront, null, SamplerState.PointClamp, null, null, null, Camera.GetMatrix());
+				0, null, SamplerState.PointClamp, null, null, null, Camera.GetMatrix());
 
-			for (int i = 0; i < TileSystem.LayerCount; i++ )
+			for (int i = 0; i < TileSystem.LayerCount; i++)
+			{
 				for (int y = rect.Top; y < rect.Bottom; y++)
 				{
 					for (int x = rect.Left; x < rect.Right; x++)
@@ -94,9 +92,13 @@ namespace Pokemon_RPG
 						if (tileSystem.Tiles[i][x, y] == null) continue;
 
 						tileSystem.Tiles[i][x, y].Draw(
-							spriteBatch, new Rectangle(x * tileSystem.TileSize, y * tileSystem.TileSize, tileSystem.TileSize, tileSystem.TileSize), gt, !InputManager.KeyPressed(Keys.L));
+							spriteBatch,
+							new Rectangle(x * tileSystem.TileSize, y * tileSystem.TileSize, tileSystem.TileSize, tileSystem.TileSize),
+							gt,
+							!InputManager.KeyPressed(Keys.L));
 					}
 				}
+			}
 
 			this.spriteBatch.End();
 

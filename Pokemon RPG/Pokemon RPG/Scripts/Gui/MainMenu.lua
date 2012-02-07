@@ -1,7 +1,7 @@
 require "LuaModules\\Base"
 
 local margin = 5
-local offsetBottom = 80
+local offsetBottom = 100
 
 local menu = gui.registerMenu("mainMenu")
 
@@ -33,16 +33,8 @@ btnOptions.MouseUp:Add(function(obj, args)
 	end
 end)
 
-local btnWorldEdit = mainMenu:AddClickableLabel("World Editor", nil, Vector2.Zero, Color(85, 85, 105))
-btnWorldEdit.Position = Vector2(game.getCenter(Vector2(btnWorldEdit.Size.Width, 0)).X, btnOptions.Position.Y - btnOptions.Size.Height - margin)
-btnWorldEdit.MouseUp:Add(function(obj, args)
-	if args.ContainedMouse and args.Button == MouseButtons.Left then
-		game.setState("worldEditor")
-	end
-end)
-
 local btnPlay = mainMenu:AddClickableLabel("Play", nil, Vector2.Zero, Color(85, 85, 105))
-btnPlay.Position = Vector2(game.getCenter(Vector2(btnPlay.Size.Width, 0)).X, btnWorldEdit.Position.Y - btnWorldEdit.Size.Height - margin)
+btnPlay.Position = Vector2(game.getCenter(Vector2(btnPlay.Size.Width, 0)).X, btnOptions.Position.Y - btnOptions.Size.Height - margin)
 btnPlay.MouseUp:Add(function(obj, args)
 	if args.ContainedMouse and args.Button == MouseButtons.Left then
 		-- TODO: Change to a screen where you can select to load, or start a new game, etc.

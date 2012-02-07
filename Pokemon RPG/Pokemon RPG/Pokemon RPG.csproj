@@ -123,9 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
-    <Compile Include="Tiles\GravelTile.cs" />
-    <Compile Include="Tiles\SandTile.cs" />
-    <Compile Include="Tiles\GrassTile.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="EventHandlers\PlayerTileEventArgs.cs" />
     <Compile Include="GuiManager.cs" />
@@ -144,12 +141,10 @@
     <Compile Include="States\Intro.cs" />
     <Compile Include="States\MainMenu.cs" />
     <Compile Include="States\State.cs" />
-    <Compile Include="Tiles\ShallowWaterTile.cs" />
+    <Compile Include="Tiles\SourceRects.cs" />
     <Compile Include="Tiles\Tile.cs" />
     <Compile Include="TileSystem.cs" />
-    <Compile Include="Tiles\WaterTile.cs" />
     <Compile Include="World.cs" />
-    <Compile Include="States\WorldEditor.cs" />
     <Compile Include="WorldGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

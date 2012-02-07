@@ -32,6 +32,20 @@ namespace Pokemon_RPG
 
 		private TileSystem tileSystem;
 
+		private Random rand;
+
+		private enum TileSide
+		{
+			Top,
+			Bottom,
+			Left,
+			Right,
+			TopLeft,
+			TopRight,
+			BottomLeft,
+			BottomRight
+		}
+
 		public WorldGenerator(ref TileSystem tileSystem)
 		{
 			this.tileSystem = tileSystem;
@@ -55,12 +69,12 @@ namespace Pokemon_RPG
 
 				return;
 			}
-			Stopwatch sw = new Stopwatch();
+			var sw = new Stopwatch();
 			sw.Start();
 
 			tileSystem.ClearTiles();
 
-			var perlin = new Perlin { Seed = this.Seed,  };
+			var perlin = new Perlin { Seed = this.Seed };
 
 			// First part: Generate landscape
 			for (int y = 0; y < Height; y++)
@@ -74,20 +88,22 @@ namespace Pokemon_RPG
 
 					if (pVal > 0.00)
 					{
-						tileSystem.Tiles[0][x, y] = new GrassTile(Color.White);
+						tileSystem.Tiles[0][x, y] = new Tile(Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.Grass, Color.White);
 					}
 					else if (pVal <= 0.00 && pVal >= -0.10)
 					{
-						tileSystem.Tiles[0][x, y] = new SandTile(Color.White);
+						tileSystem.Tiles[0][x, y] = new Tile(
+							Tile.TileId.Sand, Tile.Solidity.NonSolid, SourceRects.SandMiddle, Color.White);
 					}
 					else if(pVal >= -0.15)
 					{
-						tileSystem.Tiles[0][x, y] = new ShallowWaterTile(Color.White);
+						tileSystem.Tiles[0][x, y] = new Tile(
+							Tile.TileId.ShallowWater, Tile.Solidity.NonSolid, SourceRects.ShallowWater, Color.White);
 					}
 					else
 					{
 						color = new Color((byte)(color.R / 1.5f), (byte)(color.G / 1.5f), (byte)(color.B / 1.5f), 255);
-						tileSystem.Tiles[0][x, y] = new WaterTile(color);
+						tileSystem.Tiles[0][x, y] = new Tile(Tile.TileId.Water, Tile.Solidity.NonSolid, SourceRects.Water, color);
 					}
 				}
 			}
@@ -99,8 +115,7 @@ namespace Pokemon_RPG
 				{
 					if (tileSystem.Tiles[0][x, y] == null) continue;
 
-					this.PolishEdge(x, y);
-					this.PolishCorner(x, y);
+
 				}
 			}
 
@@ -124,101 +139,73 @@ namespace Pokemon_RPG
 			return (float)initializedCount / tileSystem.Tiles.Length;
 		}
 
-		private void PolishCorner(int x, int y)
+		private void PolishCorner(int x, int y, TileSide side, Tile.TileId tileType, Tile.TileId tileEdgeType, Tile setToTile)
 		{
-			// Top left
-			if (x - 1 >= 0 && y - 1 >= 0)
+			switch (side)
 			{
-				Tile t = tileSystem.Tiles[0][x - 1, y - 1];
-			}
+				case TileSide.BottomRight:
+					{
+						if (this.GetTile(x, y).Id == tileType)
+						{
+							if (this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType
+							    && this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType
+							    && this.GetNeighbourTile(x, y, TileSide.BottomRight).Id == tileEdgeType)
+							{
+								tileSystem.Tiles[0][x, y] = setToTile;
+							}
+						}
 
-			// Top right
-			if (x + 1 < Width - 1 && y - 1 >= 0)
-			{
-				Tile t = tileSystem.Tiles[0][x + 1, y - 1];
-			}
-
-			// Bottom right
-			if (x + 1 < Width - 1 && y + 1 < Height - 1)
-			{
-				Tile t = tileSystem.Tiles[0][x + 1, y + 1];
-			}
-
-			// Bottom left
-			if (x - 1 >= 0 && y + 1 < Height - 1)
-			{
-				Tile t = tileSystem.Tiles[0][x - 1, y + 1];
+						break;
+					}
 			}
 		}
 
-		private void PolishEdge(int x, int y)
+		private Tile GetNeighbourTile(int x, int y, TileSide side)
 		{
-			if (x < this.Width - 1)
+			if (x < 0 || y < 0 || x >= this.Width - 1 || y >= this.Height - 1) return null;
+
+			switch(side)
 			{
-				// Right
-
-				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
-				{
-					if (this.tileSystem.Tiles[0][x + 1, y].Id == Tile.TileId.Grass)
-					{
-						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
-						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Right);
-					}
-				}
+				case TileSide.Top:
+					return tileSystem.Tiles[0][x, y - 1];
+				case TileSide.Bottom:
+					return tileSystem.Tiles[0][x, y + 1];
+				case TileSide.Left:
+					return tileSystem.Tiles[0][x - 1, y];
+				case TileSide.Right:
+					return tileSystem.Tiles[0][x + 1, y];
+				case TileSide.TopLeft:
+					return tileSystem.Tiles[0][x - 1, y - 1];
+				case TileSide.TopRight:
+					return tileSystem.Tiles[0][x + 1, y - 1];
+				case TileSide.BottomLeft:
+					return tileSystem.Tiles[0][x - 1, y + 1];
+				case TileSide.BottomRight:
+					return tileSystem.Tiles[0][x + 1, y + 1];
+				default:
+					return null;
 			}
+		}
 
-			if (x > 0)
-			{
-				// Left
+		private Tile GetTile(int x, int y)
+		{
+			if(x >= 0 && y >= 0 && x < Width  - 1 && y < Height - 1)
+				return tileSystem.Tiles[0][x, y];
 
-				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
-				{
-					if (this.tileSystem.Tiles[0][x - 1, y].Id == Tile.TileId.Grass)
-					{
-						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
-						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Left);
-					}
-				}
-			}
-
-			if (y < this.Height - 1)
-			{
-				// Bottom
-
-				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
-				{
-					if (this.tileSystem.Tiles[0][x, y + 1].Id == Tile.TileId.Grass)
-					{
-						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
-						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Bottom);
-					}
-				}
-			}
-
-			if (y > 0)
-			{
-				// Top
-
-				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
-				{
-					if (this.tileSystem.Tiles[0][x, y - 1].Id == Tile.TileId.Grass)
-					{
-						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
-						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Top);
-					}
-				}
-			}
+			return null;
 		}
 
 		private void SetSeed(int? seed)
 		{
 			if (seed == null)
 			{
-				this.Seed = Helper.Rand.Next(int.MinValue, int.MaxValue);
+				rand = new Random();
+				this.Seed = rand.Next(int.MinValue, int.MaxValue);
 			}
 			else
 			{
 				this.Seed = (int)seed;
+				rand = new Random((int)seed);
 			}
 		}
 	}

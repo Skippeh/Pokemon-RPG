@@ -75,11 +75,12 @@ namespace Pokemon_RPG
 			StateManager.Initialize();
 			GuiManager.LoadGuis();
 
-			StateManager.AddState("intro", new Intro(this.GraphicsDevice));
-			StateManager.AddState("mainMenu", new MainMenu(this.GraphicsDevice));
-			StateManager.AddState("worldEditor", new WorldEditor(this.GraphicsDevice));
-			StateManager.SetState("intro", true);
-			StateManager.CurrentState.StateFinished += (sender, args) => StateManager.SetState("mainMenu", true); // CurrentState is in this case the intro state.
+			//StateManager.AddState("intro", new Intro(this.GraphicsDevice));
+			//StateManager.AddState("mainMenu", new MainMenu(this.GraphicsDevice));
+			//StateManager.SetState("intro", true);
+			StateManager.AddState("inGame", new InGame(GraphicsDevice));
+			StateManager.SetState("inGame", true);
+			//StateManager.CurrentState.StateFinished += (sender, args) => StateManager.SetState("mainMenu", true); // CurrentState is in this case the intro state.
 
 			base.Initialize();
 		}

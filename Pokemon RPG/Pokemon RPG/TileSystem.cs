@@ -80,7 +80,7 @@ namespace Pokemon_RPG
 					{
 						if (Tiles[0][x, y] == null) continue;
 
-						Tiles[i][x, y].Update(gt);
+						//Tiles[i][x, y].Update(gt);
 					}
 				}
 		}
