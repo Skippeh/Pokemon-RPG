@@ -108,6 +108,10 @@ namespace Pokemon_RPG
 			Console.WriteLine("Generation time: " + sw.ElapsedMilliseconds + "ms");
 		}
 
+		/// <summary>
+		/// Returns a float between 0 and 1, indicating much of the world is generated.
+		/// </summary>
+		/// <returns></returns>
 		public float GetTilesPercentage()
 		{
 			int initializedCount = 0;
@@ -122,12 +126,28 @@ namespace Pokemon_RPG
 		private void PolishCorner(int x, int y)
 		{
 			// Top left
+			if (x - 1 >= 0 && y - 1 >= 0)
+			{
+				
+			}
 
 			// Top right
+			if (x + 1 < Width - 1 && y - 1 >= 0)
+			{
+				
+			}
 
 			// Bottom right
+			if (x + 1 < Width - 1 && y + 1 < Height - 1)
+			{
+				
+			}
 
 			// Bottom left
+			if (x - 1 >= 0 && y + 1 < Height - 1)
+			{
+				
+			}
 		}
 
 		private void PolishEdge(int x, int y)
@@ -136,12 +156,12 @@ namespace Pokemon_RPG
 			{
 				// Right
 
-				if (this.tileSystem.Tiles[x, y].GetType().Name == "SandTile")
+				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x + 1, y].GetType().Name == "GrassTile")
+					if (this.tileSystem.Tiles[x + 1, y].Id == Tile.TileId.Grass)
 					{
 						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, SandTile.TileSide.Right);
+						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Right);
 					}
 				}
 			}
@@ -150,12 +170,12 @@ namespace Pokemon_RPG
 			{
 				// Left
 
-				if (this.tileSystem.Tiles[x, y].GetType().Name == "SandTile")
+				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x - 1, y].GetType().Name == "GrassTile")
+					if (this.tileSystem.Tiles[x - 1, y].Id == Tile.TileId.Grass)
 					{
 						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, SandTile.TileSide.Left);
+						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Left);
 					}
 				}
 			}
@@ -164,12 +184,12 @@ namespace Pokemon_RPG
 			{
 				// Bottom
 
-				if (this.tileSystem.Tiles[x, y].GetType().Name == "SandTile")
+				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x, y + 1].GetType().Name == "GrassTile")
+					if (this.tileSystem.Tiles[x, y + 1].Id == Tile.TileId.Grass)
 					{
 						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, SandTile.TileSide.Bottom);
+						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Bottom);
 					}
 				}
 			}
@@ -178,12 +198,12 @@ namespace Pokemon_RPG
 			{
 				// Top
 
-				if (this.tileSystem.Tiles[x, y].GetType().Name == "SandTile")
+				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x, y - 1].GetType().Name == "GrassTile")
+					if (this.tileSystem.Tiles[x, y - 1].Id == Tile.TileId.Grass)
 					{
 						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, SandTile.TileSide.Top);
+						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Top);
 					}
 				}
 			}

@@ -25,6 +25,10 @@ namespace Pokemon_RPG
 
 		private readonly GraphicsDevice graphicsDevice;
 
+		/// <summary>
+		/// Initializes a new instance of the World class.
+		/// </summary>
+		/// <param name="graphicsDevice">The graphics device to use when initializing the <c>SpriteBatch</c>.</param>
 		public World(GraphicsDevice graphicsDevice)
 		{
 			tileSystem = new TileSystem(2048, 2048, 16);
@@ -98,11 +102,19 @@ namespace Pokemon_RPG
 			graphicsDevice.SetRenderTarget(temp);
 		}
 
+		/// <summary>
+		/// Returns the mouse's world position.
+		/// </summary>
+		/// <returns></returns>
 		public Vector2 GetMouseWorldPosition()
 		{
 			return ((InputManager.MousePosition - Helper.GetWindowCenter()) + Camera.GetPosition()) / Camera.Zoom;
 		}
 
+		/// <summary>
+		/// Returns the tile the mouse is over. Returns null if outside the world area.
+		/// </summary>
+		/// <returns></returns>
 		public Tile GetMouseTile()
 		{
 			Console.WriteLine(this.GetMouseWorldPosition() / tileSystem.TileSize);

@@ -53,7 +53,7 @@ namespace Pokemon_RPG.Tiles
 
 		public Rectangle SourceRectangle { get; protected set; }
 
-		public int Id { get; protected set; }
+		public TileId Id { get; protected set; }
 
 		/// <summary>
 		/// Initializes a new instance of the Tile class.
@@ -63,7 +63,7 @@ namespace Pokemon_RPG.Tiles
 		/// <param name="drawColor">The draw color to use. A white color means the texture will look normal.</param>
 		public Tile(TileId id, TileType type, Rectangle textureSourceRectangle, Color drawColor, TileSide tileSide = TileSide.Middle)
 		{
-			Id = (int)id;
+			Id = id;
 			Type = type;
 			SourceRectangle = textureSourceRectangle;
 			DrawColor = drawColor;
@@ -76,8 +76,7 @@ namespace Pokemon_RPG.Tiles
 
 		public virtual void Draw(SpriteBatch sb, Rectangle position, GameTime gt, bool useDrawColor)
 		{
-			if (useDrawColor) sb.Draw(TextureAtlas, position, SourceRectangle, DrawColor);
-			else sb.Draw(TextureAtlas, position, SourceRectangle, Color.White);
+			sb.Draw(TextureAtlas, position, this.SourceRectangle, useDrawColor ? this.DrawColor : Color.White);
 		}
 
 		#region Events

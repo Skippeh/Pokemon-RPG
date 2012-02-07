@@ -43,6 +43,12 @@ namespace Pokemon_RPG
 		/// </summary>
 		public Tile[,] Tiles { get; private set; }
 
+		/// <summary>
+		/// Inititalizes a new instance of the TileSystem class.
+		/// </summary>
+		/// <param name="width">Total amount of tiles in the X axis.</param>
+		/// <param name="height">Total amount of tiles in the Y axis.</param>
+		/// <param name="tileSize">The tile size in pixels.</param>
 		public TileSystem(int width, int height, int tileSize)
 		{
 			Width = width;
@@ -74,6 +80,11 @@ namespace Pokemon_RPG
 			}
 		}
 
+		/// <summary>
+		/// Converts an area to be used in array, then returns it.
+		/// </summary>
+		/// <param name="posSize">The starting X, Y, and Width, Height</param>
+		/// <returns></returns>
 		public Rectangle GetArea(Rectangle posSize)
 		{
 			Rectangle retVal = posSize;
@@ -92,6 +103,11 @@ namespace Pokemon_RPG
 			return retVal;
 		}
 
+		/// <summary>
+		/// Returns the area around the camera position, uses the window size to determine the size and position of the rectangle.
+		/// </summary>
+		/// <param name="cameraPosition"></param>
+		/// <returns></returns>
 		public Rectangle GetArea(Vector2 cameraPosition)
 		{
 			var retVal = new Rectangle(
@@ -103,6 +119,11 @@ namespace Pokemon_RPG
 			return GetArea(retVal);
 		}
 
+		/// <summary>
+		/// Returns the tile at the given position. Position is in pixels, not tiles.
+		/// </summary>
+		/// <param name="position"></param>
+		/// <returns></returns>
 		public Tile GetTileAt(Vector2 position)
 		{
 			int x = (int)Math.Floor(position.X / TileSize);
@@ -114,6 +135,12 @@ namespace Pokemon_RPG
 			return null;
 		}
 
+		/// <summary>
+		/// Returns the tiles within the given area. Area is in pixels, not tiles.
+		/// </summary>
+		/// <param name="area">Area is in pixels, not tiles.</param>
+		/// <param name="addNullItems">Whether or not to add null tiles.</param>
+		/// <returns></returns>
 		public IEnumerable<Tile> GetTilesAt(Rectangle area, bool addNullItems)
 		{
 			var tiles = new List<Tile>();
@@ -138,6 +165,9 @@ namespace Pokemon_RPG
 			return tiles;
 		}
 
+		/// <summary>
+		/// Assigns null to all tiles.
+		/// </summary>
 		public void ClearTiles()
 		{
 			for (int y = 0; y < Tiles.GetLength(1); y++)
