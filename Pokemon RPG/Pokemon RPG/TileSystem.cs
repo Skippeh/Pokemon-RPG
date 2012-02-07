@@ -11,7 +11,7 @@ namespace Pokemon_RPG
 
 	public class TileSystem
 	{
-		private int tileSize;
+		public const int LayerCount = 2;
 
 		/// <summary>
 		/// The tile's sizes.
@@ -39,9 +39,11 @@ namespace Pokemon_RPG
 		public int Height { get; private set; }
 
 		/// <summary>
-		/// The array that contains all tiles.
+		/// The array that contains all tiles. Layer 0 draws first.
 		/// </summary>
-		public Tile[,] Tiles { get; private set; }
+		public Tile[][,] Tiles { get; private set; }
+
+		private int tileSize;
 
 		/// <summary>
 		/// Inititalizes a new instance of the TileSystem class.
@@ -55,7 +57,9 @@ namespace Pokemon_RPG
 			Height = height;
 			TileSize = tileSize;
 
-			Tiles = new Tile[Width,Height];
+			Tiles = new Tile[LayerCount][,];
+
+			for(int i = 0; i < LayerCount; i++) Tiles[i] = new Tile[Width,Height];
 		}
 
 		/// <summary>
@@ -67,17 +71,18 @@ namespace Pokemon_RPG
 		{
 			Rectangle _area;
 			if (area != Rectangle.Empty) _area = area;
-			else _area = new Rectangle(0, 0, Tiles.GetLength(0), Tiles.GetLength(1));
+			else _area = new Rectangle(0, 0, Tiles[0].GetLength(0), Tiles[0].GetLength(1));
 
-			for (int y = _area.Top; y < _area.Bottom; y++)
-			{
-				for (int x = _area.Left; x < _area.Right; x++)
+			for (int i = 0; i < LayerCount; i++ )
+				for (int y = _area.Top; y < _area.Bottom; y++)
 				{
-					if (Tiles[x, y] == null) continue;
+					for (int x = _area.Left; x < _area.Right; x++)
+					{
+						if (Tiles[0][x, y] == null) continue;
 
-					Tiles[x, y].Update(gt);
+						Tiles[i][x, y].Update(gt);
+					}
 				}
-			}
 		}
 
 		/// <summary>
@@ -129,8 +134,8 @@ namespace Pokemon_RPG
 			int x = (int)Math.Floor(position.X / TileSize);
 			int y = (int)Math.Floor(position.Y / TileSize);
 
-			if (x >= 0 && x < Tiles.GetLength(0) && y >= 0 && y < Tiles.GetLength(1))
-				return Tiles[x, y];
+			if (x >= 0 && x < Tiles[0].GetLength(0) && y >= 0 && y < Tiles[0].GetLength(1))
+				return Tiles[0][x, y];
 
 			return null;
 		}
@@ -154,11 +159,11 @@ namespace Pokemon_RPG
 			{
 				for (int _x = x; _x < width; _x++)
 				{
-					if (_x < 0 || _x >= this.Tiles.GetLength(0) || _y < 0 || _y >= this.Tiles.GetLength(1)) continue;
+					if (_x < 0 || _x >= this.Tiles[0].GetLength(0) || _y < 0 || _y >= this.Tiles[0].GetLength(1)) continue;
 
-					if (!addNullItems && Tiles[_x, _y] == null) continue;
+					if (!addNullItems && Tiles[0][_x, _y] == null) continue;
 
-					tiles.Add(Tiles[_x, _y]);
+					tiles.Add(Tiles[0][_x, _y]);
 				}
 			}
 
@@ -170,8 +175,10 @@ namespace Pokemon_RPG
 		/// </summary>
 		public void ClearTiles()
 		{
-			for (int y = 0; y < Tiles.GetLength(1); y++)
-				for (int x = 0; x < Tiles.GetLength(0); x++) Tiles[x, y] = null;
+			foreach (Tile[,] tileArray in Tiles)
+			{
+				for (int y = 0; y < tileArray.GetLength(1); y++) for (int x = 0; x < tileArray.GetLength(0); x++) tileArray[x, y] = null;
+			}
 		}
 	}
 }

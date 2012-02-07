@@ -74,20 +74,20 @@ namespace Pokemon_RPG
 
 					if (pVal > 0.00)
 					{
-						tileSystem.Tiles[x, y] = new GrassTile(Color.White);
+						tileSystem.Tiles[0][x, y] = new GrassTile(Color.White);
 					}
 					else if (pVal <= 0.00 && pVal >= -0.10)
 					{
-						tileSystem.Tiles[x, y] = new SandTile(Color.White);
+						tileSystem.Tiles[0][x, y] = new SandTile(Color.White);
 					}
 					else if(pVal >= -0.15)
 					{
-						tileSystem.Tiles[x, y] = new ShallowWaterTile(Color.White);
+						tileSystem.Tiles[0][x, y] = new ShallowWaterTile(Color.White);
 					}
 					else
 					{
 						color = new Color((byte)(color.R / 1.5f), (byte)(color.G / 1.5f), (byte)(color.B / 1.5f), 255);
-						tileSystem.Tiles[x, y] = new WaterTile(color);
+						tileSystem.Tiles[0][x, y] = new WaterTile(color);
 					}
 				}
 			}
@@ -97,7 +97,7 @@ namespace Pokemon_RPG
 			{
 				for (int x = 0; x < Width; x++)
 				{
-					if (tileSystem.Tiles[x, y] == null) continue;
+					if (tileSystem.Tiles[0][x, y] == null) continue;
 
 					this.PolishEdge(x, y);
 					this.PolishCorner(x, y);
@@ -115,9 +115,10 @@ namespace Pokemon_RPG
 		public float GetTilesPercentage()
 		{
 			int initializedCount = 0;
-			foreach (Tile t in tileSystem.Tiles)
+			foreach (Tile[,] tList in tileSystem.Tiles)
 			{
-				if (t != null) ++initializedCount;
+				foreach(Tile t in tList)
+					if (t != null) ++initializedCount;
 			}
 
 			return (float)initializedCount / tileSystem.Tiles.Length;
@@ -128,25 +129,25 @@ namespace Pokemon_RPG
 			// Top left
 			if (x - 1 >= 0 && y - 1 >= 0)
 			{
-				
+				Tile t = tileSystem.Tiles[0][x - 1, y - 1];
 			}
 
 			// Top right
 			if (x + 1 < Width - 1 && y - 1 >= 0)
 			{
-				
+				Tile t = tileSystem.Tiles[0][x + 1, y - 1];
 			}
 
 			// Bottom right
 			if (x + 1 < Width - 1 && y + 1 < Height - 1)
 			{
-				
+				Tile t = tileSystem.Tiles[0][x + 1, y + 1];
 			}
 
 			// Bottom left
 			if (x - 1 >= 0 && y + 1 < Height - 1)
 			{
-				
+				Tile t = tileSystem.Tiles[0][x - 1, y + 1];
 			}
 		}
 
@@ -156,12 +157,12 @@ namespace Pokemon_RPG
 			{
 				// Right
 
-				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
+				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x + 1, y].Id == Tile.TileId.Grass)
+					if (this.tileSystem.Tiles[0][x + 1, y].Id == Tile.TileId.Grass)
 					{
-						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Right);
+						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
+						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Right);
 					}
 				}
 			}
@@ -170,12 +171,12 @@ namespace Pokemon_RPG
 			{
 				// Left
 
-				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
+				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x - 1, y].Id == Tile.TileId.Grass)
+					if (this.tileSystem.Tiles[0][x - 1, y].Id == Tile.TileId.Grass)
 					{
-						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Left);
+						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
+						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Left);
 					}
 				}
 			}
@@ -184,12 +185,12 @@ namespace Pokemon_RPG
 			{
 				// Bottom
 
-				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
+				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x, y + 1].Id == Tile.TileId.Grass)
+					if (this.tileSystem.Tiles[0][x, y + 1].Id == Tile.TileId.Grass)
 					{
-						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Bottom);
+						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
+						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Bottom);
 					}
 				}
 			}
@@ -198,12 +199,12 @@ namespace Pokemon_RPG
 			{
 				// Top
 
-				if (this.tileSystem.Tiles[x, y].Id == Tile.TileId.Sand)
+				if (this.tileSystem.Tiles[0][x, y].Id == Tile.TileId.Sand)
 				{
-					if (this.tileSystem.Tiles[x, y - 1].Id == Tile.TileId.Grass)
+					if (this.tileSystem.Tiles[0][x, y - 1].Id == Tile.TileId.Grass)
 					{
-						var color = this.tileSystem.Tiles[x, y].DrawColor;
-						this.tileSystem.Tiles[x, y] = new SandTile(color, Tile.TileSide.Top);
+						var color = this.tileSystem.Tiles[0][x, y].DrawColor;
+						this.tileSystem.Tiles[0][x, y] = new SandTile(color, Tile.TileSide.Top);
 					}
 				}
 			}

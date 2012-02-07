@@ -96,8 +96,11 @@ namespace Pokemon_RPG
 			this.graphics.PreferMultiSampling = true;
 			//this.graphics.PreferredBackBufferWidth = 1280;
 			//this.graphics.PreferredBackBufferHeight = 720;
+			graphics.SynchronizeWithVerticalRetrace = false;
 			this.graphics.ApplyChanges();
 			this.WindowClientSizeChanged(this, new EventArgs());
+
+			IsFixedTimeStep = false;
 
 			// Create a new SpriteBatch, which can be used to draw textures.
 			this.spriteBatch = new SpriteBatch(this.GraphicsDevice);

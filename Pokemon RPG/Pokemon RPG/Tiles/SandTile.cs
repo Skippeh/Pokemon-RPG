@@ -32,16 +32,16 @@ namespace Pokemon_RPG.Tiles
 					SourceRectangle = new Rectangle(0, 48, 16, 16);
 					break;
 				case TileSide.TopLeft:
-					SourceRectangle = new Rectangle(0, 32, 16, 16);
+					SourceRectangle = new Rectangle(64, 176, 16, 16);
 					break;
 				case TileSide.TopRight:
-					SourceRectangle = new Rectangle(32, 32, 16, 16);
+					SourceRectangle = new Rectangle(48, 176, 16, 16);
 					break;
 				case TileSide.BottomRight:
-					SourceRectangle = new Rectangle(32, 64, 16, 16);
+					SourceRectangle = new Rectangle(48, 160, 16, 16);
 					break;
 				case TileSide.BottomLeft:
-					SourceRectangle = new Rectangle(0, 64, 16, 16);
+					SourceRectangle = new Rectangle(64, 160, 16, 16);
 					break;
 			}
 		}

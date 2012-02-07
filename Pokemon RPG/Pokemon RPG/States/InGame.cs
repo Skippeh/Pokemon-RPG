@@ -10,7 +10,7 @@ namespace Pokemon_RPG.States
 
 	class InGame : State
 	{
-		private float CameraSpeed = 1000f;
+		public float CameraSpeed = 1000f;
 
 		public World World { get; private set; }
 
@@ -44,12 +44,6 @@ namespace Pokemon_RPG.States
 			if (InputManager.KeyPressed(Keys.S))
 			{
 				World.Camera.Move(new Vector2(0, CameraSpeed * elapsed));
-			}
-
-			if (InputManager.KeyJustPressed(Keys.F5))
-			{
-				World.Draw(gt);
-				World.RenderTarget.SaveAsPng(System.IO.File.Create("C:\\WorldRender.png"), 4096, 4096);
 			}
 
 			if (InputManager.LmbJustPressed())

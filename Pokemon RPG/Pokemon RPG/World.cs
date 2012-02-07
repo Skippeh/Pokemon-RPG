@@ -86,16 +86,17 @@ namespace Pokemon_RPG
 			this.spriteBatch.Begin(
 				SpriteSortMode.BackToFront, null, SamplerState.PointClamp, null, null, null, Camera.GetMatrix());
 
-			for (int y = rect.Top; y < rect.Bottom; y++)
-			{
-				for (int x = rect.Left; x < rect.Right; x++)
+			for (int i = 0; i < TileSystem.LayerCount; i++ )
+				for (int y = rect.Top; y < rect.Bottom; y++)
 				{
-					if (tileSystem.Tiles[x, y] == null) continue;
+					for (int x = rect.Left; x < rect.Right; x++)
+					{
+						if (tileSystem.Tiles[i][x, y] == null) continue;
 
-					tileSystem.Tiles[x, y].Draw(
-						spriteBatch, new Rectangle(x * tileSystem.TileSize, y * tileSystem.TileSize, tileSystem.TileSize, tileSystem.TileSize), gt, !InputManager.KeyPressed(Keys.L));
+						tileSystem.Tiles[i][x, y].Draw(
+							spriteBatch, new Rectangle(x * tileSystem.TileSize, y * tileSystem.TileSize, tileSystem.TileSize, tileSystem.TileSize), gt, !InputManager.KeyPressed(Keys.L));
+					}
 				}
-			}
 
 			this.spriteBatch.End();
 

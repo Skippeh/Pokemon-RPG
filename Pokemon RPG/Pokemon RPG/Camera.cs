@@ -13,6 +13,8 @@ namespace Pokemon_RPG
 	{
 		public Vector2 Position { get; set; }
 
+		private Vector2 targetPosition;
+
 		public float Zoom { get; set; }
 
 		public float Rotation { get; set; }
