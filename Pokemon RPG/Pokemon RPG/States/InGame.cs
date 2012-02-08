@@ -17,7 +17,7 @@ namespace Pokemon_RPG.States
 		public InGame(GraphicsDevice graphicsDevice)
 			: base(graphicsDevice)
 		{
-			World = new World(graphicsDevice);
+			World = new World(graphicsDevice, 1);
 
 			World.Camera.Position = Helper.GetRandomVector(2048, 2048);
 		}
@@ -50,7 +50,7 @@ namespace Pokemon_RPG.States
 
 			if (InputManager.LmbJustPressed())
 			{
-				if (World.GetMouseTile() != null) Console.WriteLine(World.GetMouseTile().Id);
+				if (World.GetMouseTile() != null) Console.WriteLine(World.GetMouseTile().Id + ": " + World.GetMouseTile().Side);
 			}
 
 			World.Update(gt);

@@ -11,6 +11,8 @@ namespace Pokemon_RPG.Tiles
 	{
 		public static Texture2D TextureAtlas { get; set; }
 
+		public static readonly Tile InvalidTile = new Tile(TileId.Invalid, Solidity.NonSolid, Rectangle.Empty, Color.Yellow, TileSystem.TileSide.InvalidSide);
+
 		public Color DrawColor { get; set; }
 
 		public enum Solidity
@@ -19,14 +21,9 @@ namespace Pokemon_RPG.Tiles
 			Solid,
 		}
 
-		public enum Behaviour
-		{
-			Static,
-			Dynamic
-		}
-
 		public enum TileId
 		{
+			Invalid,
 			Grass,
 			Gravel,
 			Sand,
@@ -40,9 +37,11 @@ namespace Pokemon_RPG.Tiles
 		/// </summary>
 		public readonly Solidity SolidityType;
 
-		public Rectangle SourceRectangle { get; protected set; }
+		public Rectangle SourceRectangle { get; private set; }
 
-		public TileId Id { get; protected set; }
+		public TileId Id { get; private set; }
+
+		public TileSystem.TileSide Side { get; private set; }
 
 		/// <summary>
 		/// 
@@ -51,12 +50,13 @@ namespace Pokemon_RPG.Tiles
 		/// <param name="solidityType"></param>
 		/// <param name="textureSourceRectangle">The appropriate source rectangle to use. see <c>SourceRects</c>.</param>
 		/// <param name="drawColor"></param>
-		public Tile(TileId id, Solidity solidityType, Rectangle textureSourceRectangle, Color drawColor)
+		public Tile(TileId id, Solidity solidityType, Rectangle textureSourceRectangle, Color drawColor, TileSystem.TileSide tileSide)
 		{
 			Id = id;
 			SolidityType = solidityType;
 			SourceRectangle = textureSourceRectangle;
 			DrawColor = drawColor;
+			Side = tileSide;
 		}
 
 		public void Draw(SpriteBatch sb, Rectangle position, GameTime gt, bool useDrawColor)
@@ -80,17 +80,17 @@ namespace Pokemon_RPG.Tiles
 		/// </summary>
 		public event PlayerTileEventArgs.PlayerTileEventHandler PlayerOn;
 
-		public virtual void OnPlayerIn(PlayerTileEventArgs args)
+		public void OnPlayerIn(PlayerTileEventArgs args)
 		{
 			if (PlayerIn != null) PlayerIn(this, args);
 		}
 
-		public virtual void OnPlayerOut(PlayerTileEventArgs args)
+		public void OnPlayerOut(PlayerTileEventArgs args)
 		{
 			if (PlayerOut != null) PlayerOut(this, args);
 		}
 
-		public virtual void OnPlayerOn(PlayerTileEventArgs args)
+		public void OnPlayerOn(PlayerTileEventArgs args)
 		{
 			if (PlayerOn != null) PlayerOn(this, args);
 		}

@@ -29,7 +29,7 @@ namespace Pokemon_RPG
 		/// Initializes a new instance of the World class.
 		/// </summary>
 		/// <param name="graphicsDevice">The graphics device to use when initializing the <c>SpriteBatch</c>.</param>
-		public World(GraphicsDevice graphicsDevice)
+		public World(GraphicsDevice graphicsDevice, int seed)
 		{
 			tileSystem = new TileSystem(2048, 2048, 16);
 			Camera = new Camera();
@@ -38,12 +38,12 @@ namespace Pokemon_RPG
 			RenderTarget = new RenderTarget2D(graphicsDevice, (int)Helper.GetWindowSize().X, (int)Helper.GetWindowSize().Y);
 
 			worldGen = new WorldGenerator(ref tileSystem);
-			GenerateWorld(false);
+			GenerateWorld(false, seed);
 		}
 
-		private void GenerateWorld(bool outputProgress)
+		private void GenerateWorld(bool outputProgress, int seed)
 		{
-			this.worldGen.GenerateWorld(Helper.Rand.Next(int.MinValue, int.MaxValue), true);
+			this.worldGen.GenerateWorld(seed, true);
 
 			if (!outputProgress) return;
 
@@ -68,8 +68,6 @@ namespace Pokemon_RPG
 
 		public void Update(GameTime gt)
 		{
-			if(InputManager.KeyJustPressed(Keys.Enter) && worldGen.GetTilesPercentage() >= 1f) this.GenerateWorld(true);
-
 			tileSystem.Update(tileSystem.GetArea(Camera.GetPosition()), gt);
 		}
 		

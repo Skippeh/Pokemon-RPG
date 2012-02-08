@@ -34,18 +34,6 @@ namespace Pokemon_RPG
 
 		private Random rand;
 
-		private enum TileSide
-		{
-			Top,
-			Bottom,
-			Left,
-			Right,
-			TopLeft,
-			TopRight,
-			BottomLeft,
-			BottomRight
-		}
-
 		public WorldGenerator(ref TileSystem tileSystem)
 		{
 			this.tileSystem = tileSystem;
@@ -76,6 +64,8 @@ namespace Pokemon_RPG
 
 			var perlin = new Perlin { Seed = this.Seed };
 
+			Console.WriteLine("[WorldGeneration]: Generating terrain...");
+
 			// First part: Generate landscape
 			for (int y = 0; y < Height; y++)
 			{
@@ -88,40 +78,106 @@ namespace Pokemon_RPG
 
 					if (pVal > 0.00)
 					{
-						tileSystem.Tiles[0][x, y] = new Tile(Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.Grass, Color.White);
+						tileSystem.Tiles[0][x, y] = new Tile(Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.Grass, Color.White, TileSystem.TileSide.Middle);
 					}
 					else if (pVal <= 0.00 && pVal >= -0.10)
 					{
 						tileSystem.Tiles[0][x, y] = new Tile(
-							Tile.TileId.Sand, Tile.Solidity.NonSolid, SourceRects.SandMiddle, Color.White);
+							Tile.TileId.Sand, Tile.Solidity.NonSolid, SourceRects.SandMiddle, Color.White, TileSystem.TileSide.Middle);
 					}
 					else if(pVal >= -0.15)
 					{
 						tileSystem.Tiles[0][x, y] = new Tile(
-							Tile.TileId.ShallowWater, Tile.Solidity.NonSolid, SourceRects.ShallowWater, Color.White);
+							Tile.TileId.ShallowWater, Tile.Solidity.NonSolid, SourceRects.ShallowWaterMiddle, Color.White, TileSystem.TileSide.Middle);
 					}
 					else
 					{
 						color = new Color((byte)(color.R / 1.5f), (byte)(color.G / 1.5f), (byte)(color.B / 1.5f), 255);
-						tileSystem.Tiles[0][x, y] = new Tile(Tile.TileId.Water, Tile.Solidity.NonSolid, SourceRects.Water, color);
+						tileSystem.Tiles[0][x, y] = new Tile(Tile.TileId.Water, Tile.Solidity.NonSolid, SourceRects.Water, color, TileSystem.TileSide.Middle);
 					}
 				}
 			}
+
+			Console.WriteLine("[WorldGeneration]: Finished terrain, smoothing terrain...");
 
 			// Second part: Polish up terrain a bit
 			for (int y = 0; y < Height; y++)
 			{
 				for (int x = 0; x < Width; x++)
 				{
-					if (tileSystem.Tiles[0][x, y] == null) continue;
+					tileSystem.PolishEdgeCouple(
+						x,
+						y,
+						Tile.TileId.Grass,
+						Tile.TileId.Sand,
+						SourceRects.SandToGrassTop,
+						SourceRects.SandToGrassBottom,
+						SourceRects.SandToGrassLeft,
+						SourceRects.SandToGrassRight,
+						SourceRects.SandToGrassTopLeft,
+						SourceRects.SandToGrassTopRight,
+						SourceRects.SandToGrassBottomLeft,
+						SourceRects.SandToGrassBottomRight,
+						SourceRects.SandToGrassUpperHalf,
+						SourceRects.SandToGrassLowerHalf,
+						SourceRects.SandToGrassCircle);
 
+					tileSystem.PolishEdgeCouple(
+						x,
+						y,
+						Tile.TileId.ShallowWater,
+						Tile.TileId.Water,
+						SourceRects.ShallowToWaterTop,
+						SourceRects.ShallowToWaterBottom,
+						SourceRects.ShallowToWaterLeft,
+						SourceRects.ShallowToWaterRight,
+						SourceRects.ShallowtoWaterTopLeft,
+						SourceRects.ShallowToWaterTopRight,
+						SourceRects.ShallowToWaterBottomLeft,
+						SourceRects.ShallowToWaterBottomRight,
+						Rectangle.Empty, // TODO: Finish graphics.
+						Rectangle.Empty,
+						Rectangle.Empty);
 
+					tileSystem.PolishEdgeCouple(
+						x,
+						y,
+						Tile.TileId.Sand,
+						Tile.TileId.ShallowWater,
+						SourceRects.SandToShallowTop,
+						SourceRects.SandToShallowBottom,
+						SourceRects.SandToShallowLeft,
+						SourceRects.SandToShallowRight,
+						SourceRects.SandToShallowTopLeft,
+						SourceRects.SandToShallowTopRight,
+						SourceRects.SandToShallowBottomLeft,
+						SourceRects.SandToShallowBottomRight,
+						SourceRects.SandToShallowUpperHalf,
+						SourceRects.SandToShallowLowerHalf,
+						SourceRects.SandToShallowCircle);
 				}
 			}
+
+			Console.WriteLine("[WorldGeneration]: Finished edges. Doing inner edges...");
+
+			// Has to be done after doing edges, else it won't be correct in some cases.
+			for (int y = 0; y < Height; y++)
+				for (int x = 0; x < Width; x++)
+				{
+					tileSystem.PolishInnerGrass(
+						x,
+						y,
+						SourceRects.SandToGrassInnerTopLeft,
+						SourceRects.SandToGrassInnerTopRight,
+						SourceRects.SandToGrassInnerBottomLeft,
+						SourceRects.SandToGrassInnerBottomRight);
+				}
 
 			sw.Stop();
 			Console.WriteLine("Generation time: " + sw.ElapsedMilliseconds + "ms");
 		}
+
+		
 
 		/// <summary>
 		/// Returns a float between 0 and 1, indicating much of the world is generated.
@@ -139,61 +195,7 @@ namespace Pokemon_RPG
 			return (float)initializedCount / tileSystem.Tiles.Length;
 		}
 
-		private void PolishCorner(int x, int y, TileSide side, Tile.TileId tileType, Tile.TileId tileEdgeType, Tile setToTile)
-		{
-			switch (side)
-			{
-				case TileSide.BottomRight:
-					{
-						if (this.GetTile(x, y).Id == tileType)
-						{
-							if (this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType
-							    && this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType
-							    && this.GetNeighbourTile(x, y, TileSide.BottomRight).Id == tileEdgeType)
-							{
-								tileSystem.Tiles[0][x, y] = setToTile;
-							}
-						}
-
-						break;
-					}
-			}
-		}
-
-		private Tile GetNeighbourTile(int x, int y, TileSide side)
-		{
-			if (x < 0 || y < 0 || x >= this.Width - 1 || y >= this.Height - 1) return null;
-
-			switch(side)
-			{
-				case TileSide.Top:
-					return tileSystem.Tiles[0][x, y - 1];
-				case TileSide.Bottom:
-					return tileSystem.Tiles[0][x, y + 1];
-				case TileSide.Left:
-					return tileSystem.Tiles[0][x - 1, y];
-				case TileSide.Right:
-					return tileSystem.Tiles[0][x + 1, y];
-				case TileSide.TopLeft:
-					return tileSystem.Tiles[0][x - 1, y - 1];
-				case TileSide.TopRight:
-					return tileSystem.Tiles[0][x + 1, y - 1];
-				case TileSide.BottomLeft:
-					return tileSystem.Tiles[0][x - 1, y + 1];
-				case TileSide.BottomRight:
-					return tileSystem.Tiles[0][x + 1, y + 1];
-				default:
-					return null;
-			}
-		}
-
-		private Tile GetTile(int x, int y)
-		{
-			if(x >= 0 && y >= 0 && x < Width  - 1 && y < Height - 1)
-				return tileSystem.Tiles[0][x, y];
-
-			return null;
-		}
+		
 
 		private void SetSeed(int? seed)
 		{
