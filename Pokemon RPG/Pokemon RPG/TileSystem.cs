@@ -13,6 +13,7 @@ namespace Pokemon_RPG
 	{
 		public const int LayerCount = 2;
 
+		[Flags]
 		public enum TileSide
 		{
 			InvalidSide,
@@ -519,10 +520,58 @@ namespace Pokemon_RPG
 		/// <param name="bottomRight">Source rectangle for bottom right part of sprite.</param>
 		public void PolishInnerGrass(int x, int y, Rectangle topLeft, Rectangle topRight, Rectangle bottomLeft, Rectangle bottomRight)
 		{
-			if (x < 0 || y < 0 || x > Width - 1 || y > Height - 1) return;
+			if (!HasSafeNeighbours(x, y)) return;
 			if (this.GetTile(x, y) == null) return;
+			if (this.GetTile(x, y).Id != Tile.TileId.Grass) return;
 
+			Tile tTopLeft = this.GetNeighbourTile(x, y, TileSide.TopLeft);
+			Tile tTop = this.GetNeighbourTile(x, y, TileSide.Top);
+			Tile tTopRight = this.GetNeighbourTile(x, y, TileSide.TopRight);
+			Tile tRight = this.GetNeighbourTile(x, y, TileSide.Right);
+			Tile tBottomRight = this.GetNeighbourTile(x, y, TileSide.BottomRight);
+			Tile tBottom = this.GetNeighbourTile(x, y, TileSide.Bottom);
+			Tile tBottomLeft = this.GetNeighbourTile(x, y, TileSide.BottomLeft);
+			Tile tLeft = this.GetNeighbourTile(x, y, TileSide.Left);
 
+			if (this.GetTile(x, y).Side == TileSide.Middle)
+			{
+				if (tTopRight.Id != Tile.TileId.Grass)
+				{
+					Tiles[0][x, y] = new Tile(
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerTopRight, Color.White, TileSide.TopRight);
+				}
+				else if (tTopLeft.Id != Tile.TileId.Grass)
+				{
+					Tiles[0][x, y] = new Tile(
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerTopLeft, Color.White, TileSide.TopLeft);
+				}
+				else if (tBottomRight.Id != Tile.TileId.Grass)
+				{
+					Tiles[0][x, y] = new Tile(
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerBottomRight, Color.White, TileSide.BottomRight);
+				}
+				else if (tBottomLeft.Id != Tile.TileId.Grass)
+				{
+					Tiles[0][x, y] = new Tile(
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerBottomLeft, Color.White, TileSide.BottomLeft);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Tells whether the tile at the given coordinates is a corner. Assumes coordinates are safe.
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <returns></returns>
+		public bool IsEdge(int x, int y)
+		{
+			return Tiles[0][x, y].Side != TileSide.Middle;
+		}
+
+		public bool HasSafeNeighbours(int x, int y)
+		{
+			return x - 1 >= 0 && y - 1 >= 0 && x + 1 < Width && y + 1 < Height;
 		}
 
 		public Tile GetNeighbourTile(int x, int y, TileSide side)

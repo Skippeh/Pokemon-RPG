@@ -51,10 +51,10 @@ namespace Pokemon_RPG.Tiles
 		static public Rectangle SandToGrassUpperHalf = new Rectangle(80, 2984, 16, 16);
 		static public Rectangle SandToGrassLowerHalf = new Rectangle(80, 3000, 16, 16);
 		static public Rectangle SandToGrassCircle = new Rectangle(64, 3000, 16, 16);
-		static public Rectangle SandToGrassInnerTopLeft;
-		static public Rectangle SandToGrassInnerTopRight;
-		static public Rectangle SandToGrassInnerBottomLeft;
-		static public Rectangle SandToGrassInnerBottomRight;
+		static public Rectangle SandToGrassInnerTopLeft = new Rectangle(0, 2968, 16, 16);
+		static public Rectangle SandToGrassInnerTopRight = new Rectangle(16, 2968, 16, 16);
+		static public Rectangle SandToGrassInnerBottomLeft = new Rectangle(0, 2984, 16, 16);
+		static public Rectangle SandToGrassInnerBottomRight = new Rectangle(16, 2984, 16, 16);
 
 		public static Rectangle SandToShallowTopLeft = new Rectangle(144, 2968, 16, 16);
 		public static Rectangle SandToShallowTop = new Rectangle(160, 2968, 16, 16);

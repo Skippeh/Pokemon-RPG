@@ -31,7 +31,7 @@ namespace Pokemon_RPG
 		/// <param name="graphicsDevice">The graphics device to use when initializing the <c>SpriteBatch</c>.</param>
 		public World(GraphicsDevice graphicsDevice, int seed)
 		{
-			tileSystem = new TileSystem(2048, 2048, 16);
+			tileSystem = new TileSystem(512, 512, 16);
 			Camera = new Camera();
 			this.graphicsDevice = graphicsDevice;
 			spriteBatch = new SpriteBatch(this.graphicsDevice);
