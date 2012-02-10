@@ -13,26 +13,6 @@ namespace Pokemon_RPG
 	{
 		public const int LayerCount = 2;
 
-		[Flags]
-		public enum TileSide
-		{
-			InvalidSide,
-			Top,
-			Bottom,
-			Left,
-			Right,
-			TopLeft,
-			TopRight,
-			BottomLeft,
-			BottomRight,
-			All,
-			UpperHalf,
-			LowerHalf,
-			LeftHalf,
-			RightHalf,
-			Middle
-		}
-
 		/// <summary>
 		/// The tile's sizes.
 		/// </summary>
@@ -211,154 +191,154 @@ namespace Pokemon_RPG
 		/// <param name="tileEdgeType">The tile type the neighbour should be.</param>
 		/// <param name="tileEdgeSide">The tile side the neighbour should have. Pass null if it doesn't matter.</param>
 		/// <param name="setToTile">The tile at XY to set to if conditions are met.</param>
-		public void PolishNeighbour(int x, int y, TileSide side, Tile.TileId tileType, Tile.TileId tileEdgeType, Tile setToTile)
+		public void PolishNeighbour(int x, int y, Tile.TileSide side, Tile.TileId tileType, Tile.TileId tileEdgeType, Tile setToTile)
 		{
 			if (this.GetTile(x, y).Id != tileType) return;
 
 			switch (side)
 			{
-				case TileSide.BottomRight:
+				case Tile.TileSide.BottomRight:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomRight).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Bottom).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Right).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomRight).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.BottomLeft:
+				case Tile.TileSide.BottomLeft:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomLeft).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Bottom).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomLeft).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.TopRight:
+				case Tile.TileSide.TopRight:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Top).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopRight).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Top).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Right).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopRight).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.TopLeft:
+				case Tile.TileSide.TopLeft:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Top).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopLeft).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Top).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopLeft).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.Top:
+				case Tile.TileSide.Top:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Top).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Top).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.Bottom:
+				case Tile.TileSide.Bottom:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Bottom).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.Left:
+				case Tile.TileSide.Left:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.Right:
+				case Tile.TileSide.Right:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Right).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.UpperHalf:
+				case Tile.TileSide.UpperHalf:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopLeft).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Top).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopRight).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopLeft).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Top).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopRight).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Right).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.LowerHalf:
+				case Tile.TileSide.LowerHalf:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomLeft).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomRight).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomLeft).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Bottom).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomRight).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Right).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.LeftHalf:
+				case Tile.TileSide.LeftHalf:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Top).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopLeft).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomLeft).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Top).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopLeft).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomLeft).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Bottom).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.RightHalf:
+				case Tile.TileSide.RightHalf:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Top).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopRight).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomRight).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Top).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopRight).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomRight).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Bottom).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
 
 						break;
 					}
-				case TileSide.All:
+				case Tile.TileSide.All:
 					{
-						if (this.GetNeighbourTile(x, y, TileSide.Left).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopLeft).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Top).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.TopRight).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Right).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomRight).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.Bottom).Id == tileEdgeType
-							&& this.GetNeighbourTile(x, y, TileSide.BottomLeft).Id == tileEdgeType)
+						if (this.GetNeighbourTile(x, y, Tile.TileSide.Left).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopLeft).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Top).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.TopRight).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Right).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomRight).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.Bottom).Id == tileEdgeType
+							&& this.GetNeighbourTile(x, y, Tile.TileSide.BottomLeft).Id == tileEdgeType)
 						{
 							Tiles[0][x, y] = setToTile;
 						}
@@ -377,7 +357,7 @@ namespace Pokemon_RPG
 		/// <param name="tileType">The tile type we're searching for</param>
 		/// <param name="tileEdgeType">The tile type the neighbour should be.</param>
 		/// <param name="setToTile">The tile at XY to set to if conditions are met.</param>
-		public void PolishNeighbourExclusive(int x, int y, TileSide side, Tile.TileId tileType, Tile.TileId tileEdgeType, Tile setToTile, TileSide? tileEdgeSide)
+		public void PolishNeighbourExclusive(int x, int y, Tile.TileSide side, Tile.TileId tileType, Tile.TileId tileEdgeType, Tile setToTile, Tile.TileSide? tileEdgeSide)
 		{
 			if (this.GetTile(x, y).Id != tileType) return;
 
@@ -385,7 +365,7 @@ namespace Pokemon_RPG
 			{
 				if (tileEdgeSide != null)
 				{
-					if ((TileSide)tileEdgeSide == this.GetNeighbourTile(x, y, side).Side) Tiles[0][x, y] = setToTile;
+					if ((Tile.TileSide)tileEdgeSide == this.GetNeighbourTile(x, y, side).Side) Tiles[0][x, y] = setToTile;
 
 					return;
 				}
@@ -421,34 +401,34 @@ namespace Pokemon_RPG
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.Top,
+				Tile.TileSide.Top,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, top, Color.White, TileSide.Top));
+				new Tile(tileA, Tile.Solidity.NonSolid, top, Color.White, Tile.TileSide.Top));
 
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.Bottom,
+				Tile.TileSide.Bottom,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, bottom, Color.White, TileSide.Bottom));
+				new Tile(tileA, Tile.Solidity.NonSolid, bottom, Color.White, Tile.TileSide.Bottom));
 
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.Left,
+				Tile.TileSide.Left,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, left, Color.White, TileSide.Left));
+				new Tile(tileA, Tile.Solidity.NonSolid, left, Color.White, Tile.TileSide.Left));
 
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.Right,
+				Tile.TileSide.Right,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, right, Color.White, TileSide.Right));
+				new Tile(tileA, Tile.Solidity.NonSolid, right, Color.White, Tile.TileSide.Right));
 
 			#endregion
 
@@ -457,34 +437,34 @@ namespace Pokemon_RPG
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.BottomRight,
+				Tile.TileSide.BottomRight,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, bottomRight, Color.White, TileSide.BottomRight));
+				new Tile(tileA, Tile.Solidity.NonSolid, bottomRight, Color.White, Tile.TileSide.BottomRight));
 
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.BottomLeft,
+				Tile.TileSide.BottomLeft,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, bottomLeft, Color.White, TileSide.BottomLeft));
+				new Tile(tileA, Tile.Solidity.NonSolid, bottomLeft, Color.White, Tile.TileSide.BottomLeft));
 
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.TopRight,
+				Tile.TileSide.TopRight,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, topRight, Color.White, TileSide.TopRight));
+				new Tile(tileA, Tile.Solidity.NonSolid, topRight, Color.White, Tile.TileSide.TopRight));
 
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.TopLeft,
+				Tile.TileSide.TopLeft,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, topLeft, Color.White, TileSide.TopLeft));
+				new Tile(tileA, Tile.Solidity.NonSolid, topLeft, Color.White, Tile.TileSide.TopLeft));
 
 			#endregion
 
@@ -493,18 +473,18 @@ namespace Pokemon_RPG
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.UpperHalf,
+				Tile.TileSide.UpperHalf,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, upperHalf, Color.White, TileSide.UpperHalf));
+				new Tile(tileA, Tile.Solidity.NonSolid, upperHalf, Color.White, Tile.TileSide.UpperHalf));
 
 			PolishNeighbour(
 				x,
 				y,
-				TileSystem.TileSide.LowerHalf,
+				Tile.TileSide.LowerHalf,
 				tileA,
 				tileB,
-				new Tile(tileA, Tile.Solidity.NonSolid, lowerHalf, Color.White, TileSide.LowerHalf));
+				new Tile(tileA, Tile.Solidity.NonSolid, lowerHalf, Color.White, Tile.TileSide.LowerHalf));
 
 			#endregion
 		}
@@ -520,81 +500,115 @@ namespace Pokemon_RPG
 		/// <param name="bottomRight">Source rectangle for bottom right part of sprite.</param>
 		public void PolishInnerGrass(int x, int y, Rectangle topLeft, Rectangle topRight, Rectangle bottomLeft, Rectangle bottomRight)
 		{
-			if (!HasSafeNeighbours(x, y)) return;
 			if (this.GetTile(x, y) == null) return;
 			if (this.GetTile(x, y).Id != Tile.TileId.Grass) return;
 
-			Tile tTopLeft = this.GetNeighbourTile(x, y, TileSide.TopLeft);
-			Tile tTop = this.GetNeighbourTile(x, y, TileSide.Top);
-			Tile tTopRight = this.GetNeighbourTile(x, y, TileSide.TopRight);
-			Tile tRight = this.GetNeighbourTile(x, y, TileSide.Right);
-			Tile tBottomRight = this.GetNeighbourTile(x, y, TileSide.BottomRight);
-			Tile tBottom = this.GetNeighbourTile(x, y, TileSide.Bottom);
-			Tile tBottomLeft = this.GetNeighbourTile(x, y, TileSide.BottomLeft);
-			Tile tLeft = this.GetNeighbourTile(x, y, TileSide.Left);
+			Tile tTopLeft = this.GetNeighbourTile(x, y, Tile.TileSide.TopLeft);
+			Tile tTopRight = this.GetNeighbourTile(x, y, Tile.TileSide.TopRight);
+			Tile tBottomRight = this.GetNeighbourTile(x, y, Tile.TileSide.BottomRight);
+			Tile tBottomLeft = this.GetNeighbourTile(x, y, Tile.TileSide.BottomLeft);
 
-			if (this.GetTile(x, y).Side == TileSide.Middle)
+			if (this.GetTile(x, y).Side == Tile.TileSide.Middle)
 			{
-				if (tTopRight.Id != Tile.TileId.Grass)
+				if (tTopRight.Id != Tile.TileId.Grass && tTopRight != Tile.InvalidTile)
 				{
 					Tiles[0][x, y] = new Tile(
-						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerTopRight, Color.White, TileSide.TopRight);
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerTopRight, Color.White, Tile.TileSide.TopRight);
 				}
-				else if (tTopLeft.Id != Tile.TileId.Grass)
+				else if (tTopLeft.Id != Tile.TileId.Grass && tTopLeft != Tile.InvalidTile)
 				{
 					Tiles[0][x, y] = new Tile(
-						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerTopLeft, Color.White, TileSide.TopLeft);
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerTopLeft, Color.White, Tile.TileSide.TopLeft);
 				}
-				else if (tBottomRight.Id != Tile.TileId.Grass)
+				else if (tBottomRight.Id != Tile.TileId.Grass && tBottomRight != Tile.InvalidTile)
 				{
 					Tiles[0][x, y] = new Tile(
-						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerBottomRight, Color.White, TileSide.BottomRight);
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerBottomRight, Color.White, Tile.TileSide.BottomRight);
 				}
-				else if (tBottomLeft.Id != Tile.TileId.Grass)
+				else if (tBottomLeft.Id != Tile.TileId.Grass && tBottomLeft != Tile.InvalidTile)
 				{
 					Tiles[0][x, y] = new Tile(
-						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerBottomLeft, Color.White, TileSide.BottomLeft);
+						Tile.TileId.Grass, Tile.Solidity.NonSolid, SourceRects.SandToGrassInnerBottomLeft, Color.White, Tile.TileSide.BottomLeft);
 				}
 			}
 		}
 
-		/// <summary>
-		/// Tells whether the tile at the given coordinates is a corner. Assumes coordinates are safe.
-		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <returns></returns>
-		public bool IsEdge(int x, int y)
+		public void PolishTile(int y, int x)
 		{
-			return Tiles[0][x, y].Side != TileSide.Middle;
+			PolishEdgeCouple(
+				x,
+				y,
+				Tile.TileId.Grass,
+				Tile.TileId.Sand,
+				SourceRects.SandToGrassTop,
+				SourceRects.SandToGrassBottom,
+				SourceRects.SandToGrassLeft,
+				SourceRects.SandToGrassRight,
+				SourceRects.SandToGrassTopLeft,
+				SourceRects.SandToGrassTopRight,
+				SourceRects.SandToGrassBottomLeft,
+				SourceRects.SandToGrassBottomRight,
+				SourceRects.SandToGrassUpperHalf,
+				SourceRects.SandToGrassLowerHalf,
+				SourceRects.SandToGrassCircle);
+
+			PolishEdgeCouple(
+				x,
+				y,
+				Tile.TileId.ShallowWater,
+				Tile.TileId.Water,
+				SourceRects.ShallowToWaterTop,
+				SourceRects.ShallowToWaterBottom,
+				SourceRects.ShallowToWaterLeft,
+				SourceRects.ShallowToWaterRight,
+				SourceRects.ShallowtoWaterTopLeft,
+				SourceRects.ShallowToWaterTopRight,
+				SourceRects.ShallowToWaterBottomLeft,
+				SourceRects.ShallowToWaterBottomRight,
+				Rectangle.Empty,
+				// TODO: Finish graphics.
+				Rectangle.Empty,
+				Rectangle.Empty);
+
+			PolishEdgeCouple(
+				x,
+				y,
+				Tile.TileId.Sand,
+				Tile.TileId.ShallowWater,
+				SourceRects.SandToShallowTop,
+				SourceRects.SandToShallowBottom,
+				SourceRects.SandToShallowLeft,
+				SourceRects.SandToShallowRight,
+				SourceRects.SandToShallowTopLeft,
+				SourceRects.SandToShallowTopRight,
+				SourceRects.SandToShallowBottomLeft,
+				SourceRects.SandToShallowBottomRight,
+				SourceRects.SandToShallowUpperHalf,
+				SourceRects.SandToShallowLowerHalf,
+				SourceRects.SandToShallowCircle);
 		}
 
-		public bool HasSafeNeighbours(int x, int y)
+		public Tile GetNeighbourTile(int x, int y, Tile.TileSide side)
 		{
-			return x - 1 >= 0 && y - 1 >= 0 && x + 1 < Width && y + 1 < Height;
-		}
-
-		public Tile GetNeighbourTile(int x, int y, TileSide side)
-		{
-			var invalidTile = new Tile(Tile.TileId.Invalid, Tile.Solidity.NonSolid, Rectangle.Empty, Color.White, TileSide.InvalidSide);
+			var invalidTile = new Tile(Tile.TileId.Invalid, Tile.Solidity.NonSolid, Rectangle.Empty, Color.White, Tile.TileSide.InvalidSide);
 
 			switch (side)
 			{
-				case TileSide.Top:
+				case Tile.TileSide.Top:
 					return y - 1 >= 0 ? Tiles[0][x, y - 1] : Tile.InvalidTile;
-				case TileSide.Bottom:
+				case Tile.TileSide.Bottom:
 					return y + 1 < Height ? Tiles[0][x, y + 1] : Tile.InvalidTile;
-				case TileSide.Left:
+				case Tile.TileSide.Left:
 					return x - 1 >= 0 ? Tiles[0][x - 1, y] : Tile.InvalidTile;
-				case TileSide.Right:
+				case Tile.TileSide.Right:
 					return x + 1 < Width ? Tiles[0][x + 1, y] : Tile.InvalidTile;
-				case TileSide.TopLeft:
+				case Tile.TileSide.TopLeft:
 					return x - 1 >= 0 && y - 1 >= 0 ? Tiles[0][x - 1, y - 1] : Tile.InvalidTile;
-				case TileSide.TopRight:
+				case Tile.TileSide.TopRight:
 					return x + 1 < Width && y - 1 >= 0 ? Tiles[0][x + 1, y - 1] : Tile.InvalidTile;
-				case TileSide.BottomLeft:
+				case Tile.TileSide.BottomLeft:
 					return x - 1 >= 0 && y + 1 < Height ? Tiles[0][x - 1, y + 1] : Tile.InvalidTile;
-				case TileSide.BottomRight:
+				case Tile.TileSide.BottomRight:
 					return x + 1 < Width && y + 1 < Height ? Tiles[0][x + 1, y + 1] : Tile.InvalidTile;
 				default:
 					return Tile.InvalidTile;

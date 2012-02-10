@@ -80,5 +80,9 @@ namespace Pokemon_RPG.Tiles
 
 		static public Rectangle Water = new Rectangle(16, 528, 16, 16);
 		static public Rectangle TallGrass = new Rectangle(0, 16, 16, 16);
+
+		public static Rectangle Tree1x3Top = new Rectangle(48, 320, 16, 16);
+		public static Rectangle Tree1x3Middle = new Rectangle(64, 336, 16, 16);
+		public static Rectangle Tree1x3Bottom = new Rectangle(64, 352, 16, 16);
 	}
 }

@@ -13,13 +13,13 @@ namespace Pokemon_RPG
 
 	public class World
 	{
-		private readonly TileSystem tileSystem;
-
-		private readonly WorldGenerator worldGen;
-
 		public Camera Camera { get; private set; }
 
 		public RenderTarget2D RenderTarget { get; set; }
+
+		public readonly TileSystem TileSystem;
+
+		private readonly WorldGenerator worldGen;
 
 		private readonly SpriteBatch spriteBatch;
 
@@ -31,13 +31,13 @@ namespace Pokemon_RPG
 		/// <param name="graphicsDevice">The graphics device to use when initializing the <c>SpriteBatch</c>.</param>
 		public World(GraphicsDevice graphicsDevice, int seed)
 		{
-			tileSystem = new TileSystem(512, 512, 16);
+			this.TileSystem = new TileSystem(2048, 2048, 16);
 			Camera = new Camera();
 			this.graphicsDevice = graphicsDevice;
 			spriteBatch = new SpriteBatch(this.graphicsDevice);
 			RenderTarget = new RenderTarget2D(graphicsDevice, (int)Helper.GetWindowSize().X, (int)Helper.GetWindowSize().Y);
 
-			worldGen = new WorldGenerator(ref tileSystem);
+			worldGen = new WorldGenerator(ref this.TileSystem);
 			GenerateWorld(false, seed);
 		}
 
@@ -68,12 +68,12 @@ namespace Pokemon_RPG
 
 		public void Update(GameTime gt)
 		{
-			tileSystem.Update(tileSystem.GetArea(Camera.GetPosition()), gt);
+			this.TileSystem.Update(this.TileSystem.GetArea(Camera.GetPosition()), gt);
 		}
 		
 		public void Draw(GameTime gt)
 		{
-			var rect = tileSystem.GetArea(Camera.Position);
+			var rect = this.TileSystem.GetArea(Camera.Position);
 
 			var temp = (RenderTarget2D)graphicsDevice.GetRenderTargets()[0].RenderTarget;
 			graphicsDevice.SetRenderTarget(RenderTarget);
@@ -87,11 +87,11 @@ namespace Pokemon_RPG
 				{
 					for (int x = rect.Left; x < rect.Right; x++)
 					{
-						if (tileSystem.Tiles[i][x, y] == null) continue;
+						if (this.TileSystem.Tiles[i][x, y] == null) continue;
 
-						tileSystem.Tiles[i][x, y].Draw(
+						this.TileSystem.Tiles[i][x, y].Draw(
 							spriteBatch,
-							new Rectangle(x * tileSystem.TileSize, y * tileSystem.TileSize, tileSystem.TileSize, tileSystem.TileSize),
+							new Rectangle(x * this.TileSystem.TileSize, y * this.TileSystem.TileSize, this.TileSystem.TileSize, this.TileSystem.TileSize),
 							gt,
 							!InputManager.KeyPressed(Keys.L));
 					}
@@ -118,8 +118,13 @@ namespace Pokemon_RPG
 		/// <returns></returns>
 		public Tile GetMouseTile()
 		{
-			Console.WriteLine(this.GetMouseWorldPosition() / tileSystem.TileSize);
-			return tileSystem.GetTileAt(this.GetMouseWorldPosition());
+			Console.WriteLine(this.GetMouseTilePosition());
+			return this.TileSystem.GetTileAt(this.GetMouseWorldPosition());
+		}
+
+		public Vector2 GetMouseTilePosition()
+		{
+			return GetMouseWorldPosition() / TileSystem.TileSize;
 		}
 	}
 }
