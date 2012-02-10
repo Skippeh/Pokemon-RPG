@@ -6,6 +6,8 @@ namespace Pokemon_RPG.States
 	using Microsoft.Xna.Framework.Graphics;
 	using Microsoft.Xna.Framework.Input;
 
+	using Pokemon_RPG.Tiles;
+
 	using Utilities;
 
 	class InGame : State
@@ -17,7 +19,7 @@ namespace Pokemon_RPG.States
 		public InGame(GraphicsDevice graphicsDevice)
 			: base(graphicsDevice)
 		{
-			World = new World(graphicsDevice, 1);
+			World = new World(graphicsDevice, Helper.Rand.Next(int.MinValue, int.MaxValue));
 
 			World.Camera.Position = Helper.GetRandomVector(2048, 2048);
 		}
@@ -53,6 +55,7 @@ namespace Pokemon_RPG.States
 				if (World.GetMouseTile() != null) Console.WriteLine(World.GetMouseTile().Id + ": " + World.GetMouseTile().Side);
 			}
 
+			Tile.UpdateAnimations(gt);
 			World.Update(gt);
 		}
 
