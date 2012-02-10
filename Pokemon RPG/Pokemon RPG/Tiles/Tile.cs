@@ -9,9 +9,24 @@ namespace Pokemon_RPG.Tiles
 
 	public class Tile
 	{
-		public static Texture2D TextureAtlas { get; set; }
+		public static Animation WaterAnimation { get; private set; }
 
-		public static readonly Tile InvalidTile = new Tile(TileId.Invalid, Solidity.NonSolid, Rectangle.Empty, Color.Yellow, TileSystem.TileSide.InvalidSide);
+		private static Texture2D textureAtlas;
+
+		public static Texture2D TextureAtlas
+		{
+			get
+			{
+				return textureAtlas;
+			}
+			set
+			{
+				textureAtlas = value;
+				WaterAnimation = new Animation(textureAtlas, new Rectangle(0, 3016, 128, 16), 4, 16, 16);
+			}
+		}
+
+		public static readonly Tile InvalidTile = new Tile(TileId.Invalid, Solidity.NonSolid, Rectangle.Empty, Color.Yellow, Tile.TileSide.InvalidSide);
 
 		public Color DrawColor { get; set; }
 
@@ -29,11 +44,12 @@ namespace Pokemon_RPG.Tiles
 			Sand,
 			Water,
 			ShallowWater,
-			Flower
+			Flower,
+			Tree
 		}
 
 		/// <summary>
-		/// The tile type this tile is.
+		/// The type of solidity this tile has.
 		/// </summary>
 		public readonly Solidity SolidityType;
 
@@ -41,7 +57,7 @@ namespace Pokemon_RPG.Tiles
 
 		public TileId Id { get; private set; }
 
-		public TileSystem.TileSide Side { get; private set; }
+		public TileSide Side { get; private set; }
 
 		/// <summary>
 		/// 
@@ -50,18 +66,42 @@ namespace Pokemon_RPG.Tiles
 		/// <param name="solidityType"></param>
 		/// <param name="textureSourceRectangle">The appropriate source rectangle to use. see <c>SourceRects</c>.</param>
 		/// <param name="drawColor"></param>
-		public Tile(TileId id, Solidity solidityType, Rectangle textureSourceRectangle, Color drawColor, TileSystem.TileSide tileSide)
+		public Tile(TileId id, Solidity solidityType, Rectangle textureSourceRectangle, Color drawColor, TileSide tileSide)
 		{
-			Id = id;
-			SolidityType = solidityType;
-			SourceRectangle = textureSourceRectangle;
-			DrawColor = drawColor;
-			Side = tileSide;
+			this.Id = id;
+			this.SolidityType = solidityType;
+			this.SourceRectangle = textureSourceRectangle;
+			this.DrawColor = drawColor;
+			this.Side = tileSide;
+		}
+
+		public static void UpdateAnimations(GameTime gt)
+		{
+			WaterAnimation.Update(gt);
+		}
+
+		public void Update(GameTime gt)
+		{
+			
 		}
 
 		public void Draw(SpriteBatch sb, Rectangle position, GameTime gt, bool useDrawColor)
 		{
-			sb.Draw(TextureAtlas, position, this.SourceRectangle, useDrawColor ? this.DrawColor : Color.White);
+			switch (Id)
+			{
+				default:
+					{
+						sb.Draw(TextureAtlas, position, this.SourceRectangle, useDrawColor ? this.DrawColor : Color.White);
+
+						break;
+					}
+				case TileId.Water:
+					{
+						sb.Draw(TextureAtlas, position, WaterAnimation.GetSourceRectangle(), useDrawColor ? DrawColor : Color.White);
+
+						break;
+					}
+			}
 		}
 
 		#region Events
@@ -82,18 +122,37 @@ namespace Pokemon_RPG.Tiles
 
 		public void OnPlayerIn(PlayerTileEventArgs args)
 		{
-			if (PlayerIn != null) PlayerIn(this, args);
+			if (this.PlayerIn != null) this.PlayerIn(this, args);
 		}
 
 		public void OnPlayerOut(PlayerTileEventArgs args)
 		{
-			if (PlayerOut != null) PlayerOut(this, args);
+			if (this.PlayerOut != null) this.PlayerOut(this, args);
 		}
 
 		public void OnPlayerOn(PlayerTileEventArgs args)
 		{
-			if (PlayerOn != null) PlayerOn(this, args);
+			if (this.PlayerOn != null) this.PlayerOn(this, args);
 		}
 		#endregion
+
+		public enum TileSide
+		{
+			InvalidSide,
+			Top,
+			Bottom,
+			Left,
+			Right,
+			TopLeft,
+			TopRight,
+			BottomLeft,
+			BottomRight,
+			All,
+			UpperHalf,
+			LowerHalf,
+			LeftHalf,
+			RightHalf,
+			Middle
+		}
 	}
 }
